@@ -20,7 +20,7 @@ export const SortableHabitCard = ({
   onToggleCompletion,
   onEditHabit,
   onRemoveHabit, 
-  onYearChange 
+  onYearChange
 }: SortableHabitCardProps) => {
   const {
     attributes,

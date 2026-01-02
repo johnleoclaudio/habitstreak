@@ -15,17 +15,18 @@ interface HabitCardProps {
 }
 
 export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion, onEditHabit, onRemoveHabit, onYearChange, dragHandleProps }: HabitCardProps) => {
-  const [isEditing, setIsEditing] = useState(false)
+  const [isInEditMode, setIsInEditMode] = useState(false) // Individual edit mode for this habit
+  const [isEditingText, setIsEditingText] = useState(false) // For text editing
   const [editName, setEditName] = useState(habit.name)
   const inputRef = useRef<HTMLInputElement>(null)
 
   // Focus input when entering edit mode
   useEffect(() => {
-    if (isEditing && inputRef.current) {
+    if (isEditingText && inputRef.current) {
       inputRef.current.focus()
       inputRef.current.select()
     }
-  }, [isEditing])
+  }, [isEditingText])
 
   // Create a normalized today date (start of day)
   const today = new Date()
@@ -48,11 +49,11 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
     if (trimmedName && trimmedName !== habit.name) {
       onEditHabit(trimmedName)
     }
-    setIsEditing(false)
+    setIsEditingText(false)
   }
 
   const handleEditCancel = () => {
-    setIsEditing(false)
+    setIsEditingText(false)
     setEditName(habit.name)
   }
 
@@ -70,14 +71,25 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
   }, [habit.name])
 
   return (
-    <div className="bg-tokyo-bg0 border border-tokyo-bg2 rounded-lg p-6 space-y-4">
+    <div 
+      className={`bg-tokyo-bg0 border border-tokyo-bg2 rounded-lg p-6 space-y-4 ${
+        isInEditMode ? 'cursor-grab active:cursor-grabbing select-none' : ''
+      }`}
+      {...(isInEditMode ? dragHandleProps : {})}
+      style={isInEditMode ? { touchAction: 'none' } : {}}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 flex-1">
           <div
-            className="w-3 h-3 rounded-sm flex-shrink-0"
+            className="w-3 h-3 rounded-sm flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
             style={{ backgroundColor: habit.color }}
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsInEditMode(!isInEditMode)
+            }}
+            title="Click to toggle edit mode"
           />
-          {isEditing ? (
+          {isEditingText ? (
             <input
               ref={inputRef}
               value={editName}
@@ -85,12 +97,16 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
               onKeyDown={handleKeyDown}
               onBlur={handleEditSave}
               className="flex-1 text-sm font-medium bg-tokyo-bg border border-tokyo-bg3 rounded px-2 py-1 text-tokyo-fg focus:ring-1 focus:ring-tokyo-blue focus:border-transparent"
+              onClick={(e) => e.stopPropagation()}
             />
           ) : (
             <h3 
               className="text-sm font-medium text-tokyo-fg cursor-pointer hover:text-tokyo-blue transition-colors flex-1"
-              onClick={() => setIsEditing(true)}
-              title="Click to edit"
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsEditingText(true)
+              }}
+              title="Click to edit name"
             >
               {habit.name}
             </h3>
@@ -98,35 +114,46 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleMarkToday}
-            className={`
-              px-3 py-1 rounded text-xs font-medium transition-colors
-              ${isCompletedToday
-                ? 'bg-tokyo-green/20 text-tokyo-green'
-                : 'text-gray-900 hover:opacity-90'
-              }
-            `}
-            style={!isCompletedToday ? { backgroundColor: habit.color } : {}}
-          >
-            {isCompletedToday ? '✓ Done' : 'Do it!'}
-          </button>
+          {!isInEditMode && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleMarkToday()
+              }}
+              className={`
+                px-3 py-1 rounded text-xs font-medium transition-colors
+                ${isCompletedToday
+                  ? 'bg-tokyo-green/20 text-tokyo-green'
+                  : 'text-gray-900 hover:opacity-90'
+                }
+              `}
+              style={!isCompletedToday ? { backgroundColor: habit.color } : {}}
+            >
+              {isCompletedToday ? '✓ Done' : 'Do it!'}
+            </button>
+          )}
 
-          <button
-            onClick={onRemoveHabit}
-            className="p-1 text-tokyo-fg4 hover:text-tokyo-red transition-colors"
-            aria-label={`Delete ${habit.name} habit`}
-          >
-            <Trash2 className="h-3 w-3" />
-          </button>
+          {isInEditMode && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onRemoveHabit()
+                }}
+                className="p-1 text-tokyo-fg4 hover:text-tokyo-red transition-colors"
+                aria-label={`Delete ${habit.name} habit`}
+              >
+                <Trash2 className="h-3 w-3" />
+              </button>
 
-          <div
-            {...dragHandleProps}
-            className="p-1 text-tokyo-fg4 hover:text-tokyo-fg cursor-grab active:cursor-grabbing transition-colors"
-            aria-label="Drag to reorder habit"
-          >
-            <GripVertical className="h-4 w-4" />
-          </div>
+              <div
+                className="p-1 text-tokyo-fg4 hover:text-tokyo-fg transition-colors"
+                aria-label="Drag handle indicator"
+              >
+                <GripVertical className="h-4 w-4" />
+              </div>
+            </>
+          )}
         </div>
       </div>
 

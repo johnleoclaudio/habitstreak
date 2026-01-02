@@ -122,22 +122,21 @@ export const App = () => {
             </div>
            ) : (
             <Suspense fallback={
-              <div className="space-y-3">
-                {habits.map((habit) => (
-                  <HabitCard
-                    key={habit.id}
-                    habit={habit}
-                    selectedYear={selectedYear}
-                    isCompleted={(date: Date) => isCompleted(habit.id, date)}
-                    onToggleCompletion={(date: Date) => toggleCompletion(habit.id, date)}
-                    onEditHabit={(newName: string) => editHabit(habit.id, newName)}
-                    onRemoveHabit={() => removeHabit(habit.id)}
-                    onYearChange={setSelectedYear}
-                  />
-                ))}
-              </div>
-            }>
-              <DragDropComponents
+                <div className="space-y-3">
+                  {habits.map((habit) => (
+                    <HabitCard
+                      key={habit.id}
+                      habit={habit}
+                      selectedYear={selectedYear}
+                      isCompleted={(date: Date) => isCompleted(habit.id, date)}
+                      onToggleCompletion={(date: Date) => toggleCompletion(habit.id, date)}
+                       onEditHabit={(newName: string) => editHabit(habit.id, newName)}
+                       onRemoveHabit={() => removeHabit(habit.id)}
+                       onYearChange={setSelectedYear}
+                     />
+                   ))}
+                 </div>
+            }>              <DragDropComponents
                 habits={habits}
                 selectedYear={selectedYear}
                 isCompleted={isCompleted}
