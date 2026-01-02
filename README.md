@@ -2,7 +2,7 @@
 
 A GitHub contributions-style habit tracking web application built with React, TypeScript, and Tailwind CSS.
 
-![screenshot](./static/habit-streak-tracker.png)
+![habit](./static/habit.png)
 
 ## TODO:
 - [ ] Database for persistent storage
