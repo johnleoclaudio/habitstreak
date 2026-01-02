@@ -6,6 +6,7 @@ import { AddHabitForm } from './components/AddHabitForm'
 import { HabitCard } from './components/HabitCard'
 import { GoogleAnalytics } from './components/GoogleAnalytics'
 import { trackHabitEvent } from './utils/analytics'
+import { generateRandomTitle } from './utils/randomWords'
 
 const DragDropComponents = lazy(() => 
   import('./components/DragDropComponents').then(module => ({
@@ -15,6 +16,9 @@ const DragDropComponents = lazy(() =>
 
 export const App = () => {
   const { habits, addHabit, editHabit, removeHabit, toggleCompletion, isCompleted, reorderHabits } = useHabits()
+  
+  // Random title state (only generated once on initial render)
+  const [randomTitle] = useState(() => generateRandomTitle())
   
   // Year selector state
   const currentYear = new Date().getFullYear()
@@ -59,7 +63,7 @@ export const App = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-tokyo-fg">
-                Habit Streak Tracker
+                {randomTitle}
               </h1>
               <p className="text-tokyo-fg3 text-sm mt-1">
                 Track your daily habits and build lasting streaks
