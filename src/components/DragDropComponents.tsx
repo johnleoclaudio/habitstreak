@@ -21,6 +21,7 @@ interface DragDropComponentsProps {
   selectedYear: number
   isCompleted: (habitId: string, date: Date) => boolean
   toggleCompletion: (habitId: string, date: Date) => void
+  editHabit: (habitId: string, newName: string) => void
   removeHabit: (habitId: string) => void
   reorderHabits: (habits: Habit[]) => void
   setSelectedYear: (year: number) => void
@@ -31,6 +32,7 @@ export const DragDropComponents = ({
   selectedYear,
   isCompleted,
   toggleCompletion,
+  editHabit,
   removeHabit,
   reorderHabits,
   setSelectedYear
@@ -68,6 +70,7 @@ export const DragDropComponents = ({
               selectedYear={selectedYear}
               isCompleted={(date: Date) => isCompleted(habit.id, date)}
               onToggleCompletion={(date: Date) => toggleCompletion(habit.id, date)}
+              onEditHabit={(newName: string) => editHabit(habit.id, newName)}
               onRemoveHabit={() => removeHabit(habit.id)}
               onYearChange={setSelectedYear}
             />

@@ -1,4 +1,5 @@
 declare global {
+  // eslint-disable-next-line no-unused-vars
   interface Window {
     gtag?: (...args: any[]) => void;
   }
@@ -15,7 +16,7 @@ export const pageview = (url: string) => {
   }
 }
 
-export const event = ({ action, category, label, value }: {
+export const sendEvent = ({ action, category, label, value }: {
   action: string
   category: string
   label?: string
@@ -32,37 +33,43 @@ export const event = ({ action, category, label, value }: {
 
 // Habit-specific tracking events
 export const trackHabitEvent = {
-  habitAdded: (habitName: string) => event({
+  habitAdded: (habitName: string) => sendEvent({
     action: 'habit_added',
     category: 'habits',
     label: habitName,
   }),
   
-  habitCompleted: (habitName: string) => event({
+  habitEdited: (oldName: string, newName: string) => sendEvent({
+    action: 'habit_edited',
+    category: 'habits',
+    label: `${oldName} → ${newName}`,
+  }),
+  
+  habitCompleted: (habitName: string) => sendEvent({
     action: 'habit_completed',
     category: 'habits',
     label: habitName,
   }),
   
-  habitUncompleted: (habitName: string) => event({
+  habitUncompleted: (habitName: string) => sendEvent({
     action: 'habit_uncompleted',
     category: 'habits',
     label: habitName,
   }),
   
-  habitDeleted: (habitName: string) => event({
+  habitDeleted: (habitName: string) => sendEvent({
     action: 'habit_deleted',
     category: 'habits',
     label: habitName,
   }),
   
-  yearChanged: (year: number) => event({
+  yearChanged: (year: number) => sendEvent({
     action: 'year_changed',
     category: 'navigation',
     value: year,
   }),
   
-  darkModeToggled: (enabled: boolean) => event({
+  darkModeToggled: (enabled: boolean) => sendEvent({
     action: 'dark_mode_toggled',
     category: 'ui',
     label: enabled ? 'enabled' : 'disabled',

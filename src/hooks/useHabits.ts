@@ -40,6 +40,22 @@ export const useHabits = () => {
     }))
   }
 
+  const editHabit = (habitId: string, newName: string): void => {
+    const habit = data.habits.find(h => h.id === habitId)
+    
+    setData(prev => ({
+      ...prev,
+      habits: prev.habits.map(h => 
+        h.id === habitId ? { ...h, name: newName.trim() } : h
+      )
+    }))
+    
+    // Track habit name edit
+    if (habit) {
+      trackHabitEvent.habitEdited(habit.name, newName.trim())
+    }
+  }
+
   const removeHabit = (habitId: string): void => {
     const habit = data.habits.find(h => h.id === habitId)
     
@@ -101,6 +117,7 @@ export const useHabits = () => {
     habits: data.habits.sort((a, b) => (a.order || 0) - (b.order || 0)),
     completions: data.completions,
     addHabit,
+    editHabit,
     removeHabit,
     toggleCompletion,
     isCompleted,

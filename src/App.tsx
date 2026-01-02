@@ -14,7 +14,7 @@ const DragDropComponents = lazy(() =>
 )
 
 export const App = () => {
-  const { habits, addHabit, removeHabit, toggleCompletion, isCompleted, reorderHabits } = useHabits()
+  const { habits, addHabit, editHabit, removeHabit, toggleCompletion, isCompleted, reorderHabits } = useHabits()
   
   // Year selector state
   const currentYear = new Date().getFullYear()
@@ -126,6 +126,7 @@ export const App = () => {
                     selectedYear={selectedYear}
                     isCompleted={(date: Date) => isCompleted(habit.id, date)}
                     onToggleCompletion={(date: Date) => toggleCompletion(habit.id, date)}
+                    onEditHabit={(newName: string) => editHabit(habit.id, newName)}
                     onRemoveHabit={() => removeHabit(habit.id)}
                     onYearChange={setSelectedYear}
                   />
@@ -137,6 +138,7 @@ export const App = () => {
                 selectedYear={selectedYear}
                 isCompleted={isCompleted}
                 toggleCompletion={toggleCompletion}
+                editHabit={editHabit}
                 removeHabit={removeHabit}
                 reorderHabits={reorderHabits}
                 setSelectedYear={setSelectedYear}

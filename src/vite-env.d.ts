@@ -1,9 +1,6 @@
 /// <reference types="vite/client" />
 
+// eslint-disable-next-line no-unused-vars
 interface ImportMetaEnv {
   readonly VITE_GA_MEASUREMENT_ID: string
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv
 }

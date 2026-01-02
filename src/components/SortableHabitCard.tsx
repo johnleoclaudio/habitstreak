@@ -8,6 +8,7 @@ interface SortableHabitCardProps {
   selectedYear: number
   isCompleted: (date: Date) => boolean
   onToggleCompletion: (date: Date) => void
+  onEditHabit: (newName: string) => void
   onRemoveHabit: () => void
   onYearChange: (year: number) => void
 }
@@ -16,7 +17,8 @@ export const SortableHabitCard = ({
   habit, 
   selectedYear, 
   isCompleted, 
-  onToggleCompletion, 
+  onToggleCompletion,
+  onEditHabit,
   onRemoveHabit, 
   onYearChange 
 }: SortableHabitCardProps) => {
@@ -42,6 +44,7 @@ export const SortableHabitCard = ({
         selectedYear={selectedYear}
         isCompleted={isCompleted}
         onToggleCompletion={onToggleCompletion}
+        onEditHabit={onEditHabit}
         onRemoveHabit={onRemoveHabit}
         onYearChange={onYearChange}
         dragHandleProps={listeners}
