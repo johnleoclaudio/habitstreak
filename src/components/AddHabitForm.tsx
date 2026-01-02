@@ -49,69 +49,68 @@ export const AddHabitForm = ({ onAddHabit, isMobile = false }: AddHabitFormProps
   }
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      className={`bg-tokyo-bg0 p-4 rounded-lg border border-tokyo-bg2 ${
-        isMobile 
-          ? 'fixed bottom-24 right-6 left-6 z-40 shadow-xl max-w-sm ml-auto' 
-          : ''
-      }`}
-    >
-      <div className="space-y-3">
-        <div>
-          <label htmlFor="habit-name" className="block text-xs font-medium text-tokyo-fg2 mb-1">
-            Habit Name
-          </label>
-          <input
-            id="habit-name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Drink 8 glasses of water"
-            className="w-full px-2 py-1 text-sm border border-tokyo-bg3 rounded bg-tokyo-bg text-tokyo-fg placeholder-tokyo-fg4 focus:ring-1 focus:ring-tokyo-blue focus:border-transparent"
-            autoFocus
-          />
-        </div>
-        
-        <div>
-          <label className="block text-xs font-medium text-tokyo-fg2 mb-1">
-            Color
-          </label>
-          <div className="flex gap-1">
-            {HABIT_COLORS.map((color) => (
-              <button
-                key={color}
-                type="button"
-                onClick={() => setSelectedColor(color)}
-                className={`w-6 h-6 rounded border-2 ${
-                  selectedColor === color 
-                    ? 'border-tokyo-fg' 
-                    : 'border-tokyo-bg3'
-                }`}
-                style={{ backgroundColor: color }}
-                aria-label={`Select ${color} color`}
-              />
-            ))}
+    <>
+      <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setIsOpen(false)} />
+      <form 
+        onSubmit={handleSubmit} 
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 shadow-xl w-80 max-w-[calc(100vw-2rem)] bg-tokyo-bg0 p-4 rounded-lg border border-tokyo-bg2"
+      >
+        <div className="space-y-3">
+          <div>
+            <label htmlFor="habit-name" className="block text-xs font-medium text-tokyo-fg2 mb-1">
+              Habit Name
+            </label>
+            <input
+              id="habit-name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Drink 8 glasses of water"
+              className="w-full px-2 py-1 text-sm border border-tokyo-bg3 rounded bg-tokyo-bg text-tokyo-fg placeholder-tokyo-fg4 focus:ring-1 focus:ring-tokyo-blue focus:border-transparent"
+              autoFocus
+            />
+          </div>
+          
+          <div>
+            <label className="block text-xs font-medium text-tokyo-fg2 mb-1">
+              Color
+            </label>
+            <div className="flex gap-1">
+              {HABIT_COLORS.map((color) => (
+                <button
+                  key={color}
+                  type="button"
+                  onClick={() => setSelectedColor(color)}
+                  className={`w-6 h-6 rounded border-2 ${
+                    selectedColor === color 
+                      ? 'border-tokyo-fg' 
+                      : 'border-tokyo-bg3'
+                  }`}
+                  style={{ backgroundColor: color }}
+                  aria-label={`Select ${color} color`}
+                />
+              ))}
+            </div>
+          </div>
+          
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              disabled={!name.trim()}
+              className="px-4 py-1 bg-tokyo-blue hover:bg-tokyo-blue/80 disabled:bg-tokyo-bg3 disabled:cursor-not-allowed text-tokyo-bg rounded text-sm transition-colors"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="px-2 py-1 text-tokyo-fg3 hover:text-tokyo-fg text-sm"
+            >
+              Cancel
+            </button>
           </div>
         </div>
-        
-        <div className="flex gap-2">
-          <button
-            type="submit"
-            disabled={!name.trim()}
-            className="px-4 py-1 bg-tokyo-blue hover:bg-tokyo-blue/80 disabled:bg-tokyo-bg3 disabled:cursor-not-allowed text-tokyo-bg rounded text-sm transition-colors"
-          >
-            Add
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsOpen(false)}
-            className="px-2 py-1 text-tokyo-fg3 hover:text-tokyo-fg text-sm"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </>
   )
 }
