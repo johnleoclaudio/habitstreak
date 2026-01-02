@@ -2,6 +2,10 @@
 
 A GitHub contributions-style habit tracking web application built with React, TypeScript, and Tailwind CSS.
 
+## TODO:
+- [ ] Database for persistent storage
+- [ ] SSO authentication
+
 ## Features
 
 - 📈 **Visual Progress Tracking**: GitHub-style contribution grid showing your daily habit completions
