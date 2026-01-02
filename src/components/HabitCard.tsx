@@ -15,7 +15,7 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
   // Create a normalized today date (start of day)
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  
+
   const currentYear = today.getFullYear()
   const isCompletedToday = isCompleted(today)
   const isTodayVisible = selectedYear === currentYear
@@ -32,7 +32,7 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
     <div className="bg-tokyo-bg0 border border-tokyo-bg2 rounded-lg p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div 
+          <div
             className="w-3 h-3 rounded-sm"
             style={{ backgroundColor: habit.color }}
           />
@@ -40,21 +40,22 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
             {habit.name}
           </h3>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <button
             onClick={handleMarkToday}
             className={`
               px-3 py-1 rounded text-xs font-medium transition-colors
-              ${isCompletedToday 
-                ? 'bg-tokyo-green/20 text-tokyo-green' 
-                : 'bg-tokyo-bg1 hover:bg-tokyo-bg2 text-tokyo-fg3'
+              ${isCompletedToday
+                ? 'bg-tokyo-green/20 text-tokyo-green'
+                : 'text-tokyo-bg0 hover:opacity-90'
               }
             `}
+            style={!isCompletedToday ? { backgroundColor: habit.color } : {}}
           >
-            {isCompletedToday ? '✓' : 'Mark'}
+            {isCompletedToday ? '✓ Done' : 'Do it!'}
           </button>
-          
+
           <button
             onClick={onRemoveHabit}
             className="p-1 text-tokyo-fg4 hover:text-tokyo-red transition-colors"
@@ -64,7 +65,7 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
           </button>
         </div>
       </div>
-      
+
       <HabitGrid
         habitColor={habit.color}
         selectedYear={selectedYear}
