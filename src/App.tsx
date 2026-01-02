@@ -1,86 +1,18 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { ChevronDown } from 'lucide-react'
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core'
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import {
-  useSortable,
-} from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { useHabits } from './hooks/useHabits'
 import { DarkModeToggle } from './components/DarkModeToggle'
 import { AddHabitForm } from './components/AddHabitForm'
 import { HabitCard } from './components/HabitCard'
-import { Habit } from './types'
 
-// Sortable Habit Card wrapper
-const SortableHabitCard = ({ 
-  habit, 
-  selectedYear, 
-  isCompleted, 
-  onToggleCompletion, 
-  onRemoveHabit, 
-  onYearChange 
-}: {
-  habit: Habit
-  selectedYear: number
-  isCompleted: (date: Date) => boolean
-  onToggleCompletion: (date: Date) => void
-  onRemoveHabit: () => void
-  onYearChange: (year: number) => void
-}) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: habit.id })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.8 : 1,
-  }
-
-  return (
-    <div ref={setNodeRef} style={style} {...attributes}>
-      <HabitCard
-        habit={habit}
-        selectedYear={selectedYear}
-        isCompleted={isCompleted}
-        onToggleCompletion={onToggleCompletion}
-        onRemoveHabit={onRemoveHabit}
-        onYearChange={onYearChange}
-        dragHandleProps={listeners}
-      />
-    </div>
-  )
-}
+const DragDropComponents = lazy(() => 
+  import('./components/DragDropComponents').then(module => ({
+    default: module.DragDropComponents
+  }))
+)
 
 export const App = () => {
   const { habits, addHabit, removeHabit, toggleCompletion, isCompleted, reorderHabits } = useHabits()
-  
-  // Drag and drop sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  )
   
   // Year selector state
   const currentYear = new Date().getFullYear()
@@ -112,17 +44,6 @@ export const App = () => {
   }
   
   const availableYears = getAvailableYears()
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
-
-    if (active.id !== over?.id) {
-      const oldIndex = habits.findIndex((habit) => habit.id === active.id)
-      const newIndex = habits.findIndex((habit) => habit.id === over?.id)
-      
-      reorderHabits(arrayMove(habits, oldIndex, newIndex))
-    }
-  }
 
   return (
     <div className="min-h-screen bg-tokyo-bg transition-colors">
@@ -192,27 +113,32 @@ export const App = () => {
               </p>
             </div>
            ) : (
-            <DndContext 
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext items={habits.map(h => h.id)} strategy={verticalListSortingStrategy}>
-                <div className="space-y-3">
-                  {habits.map((habit) => (
-                    <SortableHabitCard
-                      key={habit.id}
-                      habit={habit}
-                      selectedYear={selectedYear}
-                      isCompleted={(date: Date) => isCompleted(habit.id, date)}
-                      onToggleCompletion={(date: Date) => toggleCompletion(habit.id, date)}
-                      onRemoveHabit={() => removeHabit(habit.id)}
-                      onYearChange={setSelectedYear}
-                    />
-                  ))}
-                </div>
-              </SortableContext>
-            </DndContext>          )}
+            <Suspense fallback={
+              <div className="space-y-3">
+                {habits.map((habit) => (
+                  <HabitCard
+                    key={habit.id}
+                    habit={habit}
+                    selectedYear={selectedYear}
+                    isCompleted={(date: Date) => isCompleted(habit.id, date)}
+                    onToggleCompletion={(date: Date) => toggleCompletion(habit.id, date)}
+                    onRemoveHabit={() => removeHabit(habit.id)}
+                    onYearChange={setSelectedYear}
+                  />
+                ))}
+              </div>
+            }>
+              <DragDropComponents
+                habits={habits}
+                selectedYear={selectedYear}
+                isCompleted={isCompleted}
+                toggleCompletion={toggleCompletion}
+                removeHabit={removeHabit}
+                reorderHabits={reorderHabits}
+                setSelectedYear={setSelectedYear}
+              />
+            </Suspense>
+          )}
         </div>
         
         {/* Floating Add Habit Button - Mobile only */}
