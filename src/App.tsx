@@ -47,58 +47,58 @@ export const App = () => {
 
   return (
     <div className="min-h-screen bg-tokyo-bg transition-colors">
-      <div className="max-w-5xl mx-auto px-4 py-6">
-        <header className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-tokyo-fg">
-              Habit Streak Tracker
-            </h1>
-            <p className="text-tokyo-fg3 text-sm mt-1">
-              Track your daily habits and build lasting streaks
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Add Habit - Desktop only */}
-            <div className="hidden md:block">
+      <div className="max-w-5xl mx-auto px-4 py-6 pb-24 md:pb-6">
+        <header className="mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-tokyo-fg">
+                Habit Streak Tracker
+              </h1>
+              <p className="text-tokyo-fg3 text-sm mt-1">
+                Track your daily habits and build lasting streaks
+              </p>
+            </div>
+            {/* Desktop controls */}
+            <div className="hidden md:flex items-center gap-3">
               <AddHabitForm onAddHabit={addHabit} />
-            </div>
-            
-            {/* Year Selector */}
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
-                className="flex items-center gap-1 px-2 py-1 text-sm text-tokyo-fg3 hover:text-tokyo-fg transition-colors"
-              >
-                <span>{selectedYear}</span>
-                <ChevronDown className={`h-3 w-3 transition-transform ${isYearDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
               
-              {isYearDropdownOpen && (
-                <div className="absolute top-full right-0 mt-1 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-10 min-w-full">
-                  {availableYears.map((year) => (
-                    <button
-                      key={year}
-                      onClick={() => {
-                        setSelectedYear(year)
-                        setIsYearDropdownOpen(false)
-                      }}
-                      className={`
-                        w-full px-3 py-1 text-sm text-left hover:bg-tokyo-bg2 transition-colors
-                        ${year === selectedYear ? 'bg-tokyo-bg2 text-tokyo-blue' : 'text-tokyo-fg'}
-                        ${year === availableYears[0] ? 'rounded-t-md' : ''}
-                        ${year === availableYears[availableYears.length - 1] ? 'rounded-b-md' : ''}
-                      `}
-                    >
-                      {year}
-                      {year === currentYear && (
-                        <span className="ml-1 text-xs text-tokyo-fg4">(current)</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {/* Year Selector */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
+                  className="flex items-center gap-1 px-2 py-1 text-sm text-tokyo-fg3 hover:text-tokyo-fg transition-colors"
+                >
+                  <span>{selectedYear}</span>
+                  <ChevronDown className={`h-3 w-3 transition-transform ${isYearDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {isYearDropdownOpen && (
+                  <div className="absolute top-full right-0 mt-1 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-10 min-w-full">
+                    {availableYears.map((year) => (
+                      <button
+                        key={year}
+                        onClick={() => {
+                          setSelectedYear(year)
+                          setIsYearDropdownOpen(false)
+                        }}
+                        className={`
+                          w-full px-3 py-1 text-sm text-left hover:bg-tokyo-bg2 transition-colors
+                          ${year === selectedYear ? 'bg-tokyo-bg2 text-tokyo-blue' : 'text-tokyo-fg'}
+                          ${year === availableYears[0] ? 'rounded-t-md' : ''}
+                          ${year === availableYears[availableYears.length - 1] ? 'rounded-b-md' : ''}
+                        `}
+                      >
+                        {year}
+                        {year === currentYear && (
+                          <span className="ml-1 text-xs text-tokyo-fg4">(current)</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <DarkModeToggle />
             </div>
-            <DarkModeToggle />
           </div>
         </header>
 
@@ -142,8 +142,51 @@ export const App = () => {
         </div>
         
         {/* Floating Add Habit Button - Mobile only */}
-        <div className="md:hidden fixed bottom-6 right-6 z-50">
+        <div className="md:hidden fixed bottom-20 right-6 z-50">
           <AddHabitForm onAddHabit={addHabit} isMobile={true} />
+        </div>
+        
+        {/* Mobile Footer with Year Picker and Dark Mode Toggle */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-tokyo-bg1 border-t border-tokyo-bg3 px-4 py-3 z-40">
+          <div className="max-w-5xl mx-auto flex items-center justify-between">
+            {/* Year Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
+                className="flex items-center gap-2 px-3 py-2 text-sm text-tokyo-fg3 hover:text-tokyo-fg transition-colors bg-tokyo-bg2 rounded-md"
+              >
+                <span>Year: {selectedYear}</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${isYearDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {isYearDropdownOpen && (
+                <div className="absolute bottom-full left-0 mb-2 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-50 min-w-full max-h-48 overflow-y-auto">
+                  {availableYears.map((year) => (
+                    <button
+                      key={year}
+                      onClick={() => {
+                        setSelectedYear(year)
+                        setIsYearDropdownOpen(false)
+                      }}
+                      className={`
+                        w-full px-3 py-2 text-sm text-left hover:bg-tokyo-bg2 transition-colors
+                        ${year === selectedYear ? 'bg-tokyo-bg2 text-tokyo-blue' : 'text-tokyo-fg'}
+                        ${year === availableYears[0] ? 'rounded-t-md' : ''}
+                        ${year === availableYears[availableYears.length - 1] ? 'rounded-b-md' : ''}
+                      `}
+                    >
+                      {year}
+                      {year === currentYear && (
+                        <span className="ml-2 text-xs text-tokyo-fg4">(current)</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <DarkModeToggle />
+          </div>
         </div>
       </div>
     </div>
