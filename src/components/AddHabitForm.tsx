@@ -87,7 +87,7 @@ export const AddHabitForm = ({ onAddHabit }: AddHabitFormProps) => {
           <button
             type="submit"
             disabled={!name.trim()}
-            className="flex-1 bg-tokyo-blue hover:bg-tokyo-blue/80 disabled:bg-tokyo-bg3 disabled:cursor-not-allowed text-tokyo-bg py-1 px-2 rounded text-sm transition-colors"
+            className="px-4 py-1 bg-tokyo-blue hover:bg-tokyo-blue/80 disabled:bg-tokyo-bg3 disabled:cursor-not-allowed text-tokyo-bg rounded text-sm transition-colors"
           >
             Add
           </button>
