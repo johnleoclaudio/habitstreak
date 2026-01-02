@@ -72,31 +72,40 @@ export const App = () => {
               {/* Year Selector */}
               <div className="relative" ref={dropdownRef}>
                 <button
-                  onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
+                  onClick={() => {
+                    console.log('Desktop dropdown button clicked, current open state:', isYearDropdownOpen)
+                    setIsYearDropdownOpen(!isYearDropdownOpen)
+                  }}
                   className="flex items-center gap-1 px-2 py-1 text-sm text-tokyo-fg3 hover:text-tokyo-fg transition-colors"
                 >
                   <span>{selectedYear}</span>
                   <ChevronDown className={`h-3 w-3 transition-transform ${isYearDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
                 
-                {isYearDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-1 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-10 min-w-full">
-                    {availableYears.map((year) => (
-                      <button
-                        key={year}
-                        onClick={() => {
-                          setSelectedYear(year)
-                          setIsYearDropdownOpen(false)
-                          trackHabitEvent.yearChanged(year)
-                        }}
-                        className={`
-                          w-full px-3 py-1 text-sm text-left hover:bg-tokyo-bg2 transition-colors
-                          ${year === selectedYear ? 'bg-tokyo-bg2 text-tokyo-blue' : 'text-tokyo-fg'}
-                          ${year === availableYears[0] ? 'rounded-t-md' : ''}
-                          ${year === availableYears[availableYears.length - 1] ? 'rounded-b-md' : ''}
-                        `}
-                      >
-                        {year}
+                 {isYearDropdownOpen && (
+                   <div className="absolute top-full right-0 mt-1 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-[100] min-w-full">                    {availableYears.map((year) => (
+                       <button
+                         key={year}
+                         onClick={(e) => {
+                           e.preventDefault()
+                           e.stopPropagation()
+                           console.log('Desktop year selector clicked:', year, 'current selectedYear:', selectedYear)
+                           setSelectedYear(year)
+                           setIsYearDropdownOpen(false)
+                           trackHabitEvent.yearChanged(year)
+                         }}
+                         onMouseDown={(e) => {
+                           e.preventDefault()
+                           e.stopPropagation()
+                         }}
+                         className={`
+                           w-full px-3 py-1 text-sm text-left hover:bg-tokyo-bg2 transition-colors cursor-pointer
+                           ${year === selectedYear ? 'bg-tokyo-bg2 text-tokyo-blue' : 'text-tokyo-fg'}
+                           ${year === availableYears[0] ? 'rounded-t-md' : ''}
+                           ${year === availableYears[availableYears.length - 1] ? 'rounded-b-md' : ''}
+                         `}
+                         type="button"
+                       >                        {year}
                         {year === currentYear && (
                           <span className="ml-1 text-xs text-tokyo-fg4">(current)</span>
                         )}

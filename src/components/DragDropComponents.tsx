@@ -13,6 +13,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
+import { useEffect, useState } from 'react'
 import { SortableHabitCard } from './SortableHabitCard'
 import { Habit } from '../types'
 
@@ -37,6 +38,12 @@ export const DragDropComponents = ({
   reorderHabits,
   setSelectedYear
 }: DragDropComponentsProps) => {
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  // Force refresh when selectedYear changes
+  useEffect(() => {
+    setRefreshKey(prev => prev + 1)
+  }, [selectedYear])
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -61,6 +68,7 @@ export const DragDropComponents = ({
 
   return (
     <DndContext 
+      key={refreshKey}
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
@@ -69,7 +77,7 @@ export const DragDropComponents = ({
         <div className="space-y-3">
           {habits.map((habit) => (
             <SortableHabitCard
-              key={habit.id}
+              key={`${habit.id}-${selectedYear}`}
               habit={habit}
               selectedYear={selectedYear}
               isCompleted={(date: Date) => isCompleted(habit.id, date)}
