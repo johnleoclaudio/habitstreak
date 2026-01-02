@@ -21,11 +21,15 @@ export const App = () => {
   const [selectedYear, setSelectedYear] = useState(currentYear)
   const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const mobileDropdownRef = useRef<HTMLDivElement>(null)
   
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      const isDesktopClick = dropdownRef.current && !dropdownRef.current.contains(event.target as Node)
+      const isMobileClick = mobileDropdownRef.current && !mobileDropdownRef.current.contains(event.target as Node)
+      
+      if ((isDesktopClick || isMobileClick) && isYearDropdownOpen) {
         setIsYearDropdownOpen(false)
       }
     }
@@ -156,7 +160,7 @@ export const App = () => {
         <div className="md:hidden fixed bottom-0 left-0 right-0 bg-tokyo-bg1 border-t border-tokyo-bg3 px-4 py-3 z-40">
           <div className="max-w-5xl mx-auto flex items-center justify-between">
             {/* Year Selector */}
-            <div className="relative">
+            <div className="relative" ref={mobileDropdownRef}>
               <button
                 onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
                 className="flex items-center gap-2 px-3 py-2 text-sm text-tokyo-fg3 hover:text-tokyo-fg transition-colors bg-tokyo-bg2 rounded-md"
@@ -166,11 +170,21 @@ export const App = () => {
               </button>
               
               {isYearDropdownOpen && (
-                <div className="absolute bottom-full left-0 mb-2 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-50 min-w-full max-h-48 overflow-y-auto">
+                <div className="absolute bottom-full left-0 mb-2 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-[60] min-w-full max-h-48 overflow-y-auto"
+                     style={{ touchAction: 'manipulation' }}>
                   {availableYears.map((year) => (
                     <button
                       key={year}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        setSelectedYear(year)
+                        setIsYearDropdownOpen(false)
+                        trackHabitEvent.yearChanged(year)
+                      }}
+                      onTouchEnd={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
                         setSelectedYear(year)
                         setIsYearDropdownOpen(false)
                         trackHabitEvent.yearChanged(year)
