@@ -4,34 +4,36 @@
 
 @layer base {
   :root {
-    /* Light mode - Gruvbox colors */
-    --color-bg: 249 245 215; /* #f9f5d7 - light0_hard */
-    --color-bg0: 251 241 199; /* #fbf1c7 - light0 */
-    --color-bg1: 235 219 178; /* #ebdbb2 - light1 */
-    --color-bg2: 213 196 161; /* #d5c4a1 - light2 */
-    --color-bg3: 189 174 147; /* #bdae93 - light3 */
-    --color-bg4: 168 153 132; /* #a89984 - light4 */
-    --color-fg: 60 56 54; /* #3c3836 - dark0 */
-    --color-fg0: 40 40 40; /* #282828 - dark0_hard */
-    --color-fg1: 60 56 54; /* #3c3836 - dark1 */
-    --color-fg2: 80 73 69; /* #504945 - dark2 */
-    --color-fg3: 102 92 84; /* #665c54 - dark3 */
-    --color-fg4: 124 111 100; /* #7c6f64 - dark4 */
+    /* Light mode - Tokyo Night Light */
+    --color-bg: 213 214 219; /* #d5d6db - light background */
+    --color-bg0: 230 230 230; /* #e6e6e6 - light background variant */
+    --color-bg1: 220 220 225; /* #dcdce1 - light background 1 */
+    --color-bg2: 200 200 210; /* #c8c8d2 - light background 2 */
+    --color-bg3: 180 180 190; /* #b4b4be - light background 3 */
+    --color-fg: 52 59 88; /* #343b58 - dark text */
+    --color-fg2: 70 80 110; /* #46506e - medium text */
+    --color-fg3: 100 110 140; /* #646e8c - light text */
+    --color-fg4: 120 130 160; /* #7882a0 - lighter text */
+    --color-blue: 52 109 219; /* #346edb - blue */
+    --color-green: 65 175 85; /* #41af55 - green */
+    --color-yellow: 255 158 100; /* #ff9e64 - yellow */
+    --color-red: 247 118 142; /* #f7768e - red */
   }
 
   .dark {
-    /* Dark mode - Gruvbox colors */
-    --color-bg: 40 40 40; /* #282828 - dark0_hard */
-    --color-bg0: 40 40 40; /* #282828 - dark0 */
-    --color-bg1: 60 56 54; /* #3c3836 - dark1 */
-    --color-bg2: 80 73 69; /* #504945 - dark2 */
-    --color-bg3: 102 92 84; /* #665c54 - dark3 */
-    --color-bg4: 124 111 100; /* #7c6f64 - dark4 */
-    --color-fg: 235 219 178; /* #ebdbb2 - light0 */
-    --color-fg0: 251 241 199; /* #fbf1c7 - light0_hard */
-    --color-fg1: 235 219 178; /* #ebdbb2 - light1 */
-    --color-fg2: 213 196 161; /* #d5c4a1 - light2 */
-    --color-fg3: 189 174 147; /* #bdae93 - light3 */
-    --color-fg4: 168 153 132; /* #a89984 - light4 */
+    /* Dark mode - Tokyo Night */
+    --color-bg: 26 27 38; /* #1a1b26 - dark background */
+    --color-bg0: 36 40 59; /* #24283b - dark background variant */
+    --color-bg1: 41 46 66; /* #292e42 - dark background 1 */
+    --color-bg2: 52 59 88; /* #343b58 - dark background 2 */
+    --color-bg3: 70 80 110; /* #46506e - dark background 3 */
+    --color-fg: 192 202 245; /* #c0caf5 - light text */
+    --color-fg2: 169 177 214; /* #a9b1d6 - medium text */
+    --color-fg3: 118 127 172; /* #767dac - light text */
+    --color-fg4: 86 95 137; /* #565f89 - lighter text */
+    --color-blue: 122 162 247; /* #7aa2f7 - blue */
+    --color-green: 158 206 106; /* #9ece6a - green */
+    --color-yellow: 224 175 104; /* #e0af68 - yellow */
+    --color-red: 247 118 142; /* #f7768e - red */
   }
 }
