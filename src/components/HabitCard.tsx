@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Trash2, GripVertical, Edit3, Check, X } from 'lucide-react'
+import { Trash2, GripVertical } from 'lucide-react'
 import { Habit } from '../types'
 import { HabitGrid } from './HabitGrid'
 
@@ -44,11 +44,11 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
   }
 
   const handleEditSave = () => {
-    if (editName.trim() && editName.trim() !== habit.name) {
-      onEditHabit(editName.trim())
+    const trimmedName = editName.trim()
+    if (trimmedName && trimmedName !== habit.name) {
+      onEditHabit(trimmedName)
     }
     setIsEditing(false)
-    setEditName(habit.name)
   }
 
   const handleEditCancel = () => {
@@ -63,6 +63,11 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
       handleEditCancel()
     }
   }
+
+  // Update local state when habit name changes from parent
+  useEffect(() => {
+    setEditName(habit.name)
+  }, [habit.name])
 
   return (
     <div className="bg-tokyo-bg0 border border-tokyo-bg2 rounded-lg p-6 space-y-4">
@@ -93,64 +98,35 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
         </div>
 
         <div className="flex items-center gap-2">
-          {isEditing ? (
-            <>
-              <button
-                onClick={handleEditSave}
-                className="p-1 text-tokyo-green hover:text-tokyo-green/80 transition-colors"
-                aria-label="Save edit"
-              >
-                <Check className="h-3 w-3" />
-              </button>
-              <button
-                onClick={handleEditCancel}
-                className="p-1 text-tokyo-fg4 hover:text-tokyo-red transition-colors"
-                aria-label="Cancel edit"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={handleMarkToday}
-                className={`
-                  px-3 py-1 rounded text-xs font-medium transition-colors
-                  ${isCompletedToday
-                    ? 'bg-tokyo-green/20 text-tokyo-green'
-                    : 'text-gray-900 hover:opacity-90'
-                  }
-                `}
-                style={!isCompletedToday ? { backgroundColor: habit.color } : {}}
-              >
-                {isCompletedToday ? '✓ Done' : 'Do it!'}
-              </button>
+          <button
+            onClick={handleMarkToday}
+            className={`
+              px-3 py-1 rounded text-xs font-medium transition-colors
+              ${isCompletedToday
+                ? 'bg-tokyo-green/20 text-tokyo-green'
+                : 'text-gray-900 hover:opacity-90'
+              }
+            `}
+            style={!isCompletedToday ? { backgroundColor: habit.color } : {}}
+          >
+            {isCompletedToday ? '✓ Done' : 'Do it!'}
+          </button>
 
-              <button
-                onClick={() => setIsEditing(true)}
-                className="p-1 text-tokyo-fg4 hover:text-tokyo-blue transition-colors"
-                aria-label={`Edit ${habit.name} habit`}
-              >
-                <Edit3 className="h-3 w-3" />
-              </button>
+          <button
+            onClick={onRemoveHabit}
+            className="p-1 text-tokyo-fg4 hover:text-tokyo-red transition-colors"
+            aria-label={`Delete ${habit.name} habit`}
+          >
+            <Trash2 className="h-3 w-3" />
+          </button>
 
-              <button
-                onClick={onRemoveHabit}
-                className="p-1 text-tokyo-fg4 hover:text-tokyo-red transition-colors"
-                aria-label={`Delete ${habit.name} habit`}
-              >
-                <Trash2 className="h-3 w-3" />
-              </button>
-
-              <div
-                {...dragHandleProps}
-                className="p-1 text-tokyo-fg4 hover:text-tokyo-fg cursor-grab active:cursor-grabbing transition-colors"
-                aria-label="Drag to reorder habit"
-              >
-                <GripVertical className="h-4 w-4" />
-              </div>
-            </>
-          )}
+          <div
+            {...dragHandleProps}
+            className="p-1 text-tokyo-fg4 hover:text-tokyo-fg cursor-grab active:cursor-grabbing transition-colors"
+            aria-label="Drag to reorder habit"
+          >
+            <GripVertical className="h-4 w-4" />
+          </div>
         </div>
       </div>
 
