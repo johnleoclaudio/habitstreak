@@ -48,7 +48,7 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
               px-3 py-1 rounded text-xs font-medium transition-colors
               ${isCompletedToday
                 ? 'bg-tokyo-green/20 text-tokyo-green'
-                : 'text-tokyo-bg0 hover:opacity-90'
+                : 'text-gray-900 hover:opacity-90'
               }
             `}
             style={!isCompletedToday ? { backgroundColor: habit.color } : {}}
