@@ -52,6 +52,11 @@ export const App = () => {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            {/* Add Habit - Desktop only */}
+            <div className="hidden md:block">
+              <AddHabitForm onAddHabit={addHabit} />
+            </div>
+            
             {/* Year Selector */}
             <div className="relative" ref={dropdownRef}>
               <button
@@ -92,8 +97,6 @@ export const App = () => {
         </header>
 
         <div className="space-y-4">
-          <AddHabitForm onAddHabit={addHabit} />
-          
           {habits.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-tokyo-fg4 mb-2">
@@ -118,6 +121,11 @@ export const App = () => {
               ))}
             </div>
           )}
+        </div>
+        
+        {/* Floating Add Habit Button - Mobile only */}
+        <div className="md:hidden fixed bottom-6 right-6 z-50">
+          <AddHabitForm onAddHabit={addHabit} isMobile={true} />
         </div>
       </div>
     </div>

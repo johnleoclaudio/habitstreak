@@ -3,6 +3,7 @@ import { Plus } from 'lucide-react'
 
 interface AddHabitFormProps {
   onAddHabit: (habitName: string, habitColor: string) => void
+  isMobile?: boolean
 }
 
 const HABIT_COLORS = [
@@ -16,7 +17,7 @@ const HABIT_COLORS = [
   '#c0caf5', // tokyo fg
 ]
 
-export const AddHabitForm = ({ onAddHabit }: AddHabitFormProps) => {
+export const AddHabitForm = ({ onAddHabit, isMobile = false }: AddHabitFormProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [selectedColor, setSelectedColor] = useState(HABIT_COLORS[0])
@@ -35,16 +36,27 @@ export const AddHabitForm = ({ onAddHabit }: AddHabitFormProps) => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 bg-tokyo-blue hover:bg-tokyo-blue/80 text-tokyo-bg rounded text-sm transition-colors"
+        className={`flex items-center gap-2 px-3 py-2 bg-tokyo-blue hover:bg-tokyo-blue/80 text-tokyo-bg rounded text-sm transition-colors ${
+          isMobile 
+            ? 'w-14 h-14 rounded-full shadow-lg hover:shadow-xl justify-center' 
+            : ''
+        }`}
       >
-        <Plus className="h-3 w-3" />
-        Add Habit
+        <Plus className={isMobile ? 'h-6 w-6' : 'h-3 w-3'} />
+        {!isMobile && 'Add Habit'}
       </button>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-tokyo-bg0 p-4 rounded-lg border border-tokyo-bg2">
+    <form 
+      onSubmit={handleSubmit} 
+      className={`bg-tokyo-bg0 p-4 rounded-lg border border-tokyo-bg2 ${
+        isMobile 
+          ? 'fixed bottom-24 right-6 left-6 z-40 shadow-xl max-w-sm ml-auto' 
+          : ''
+      }`}
+    >
       <div className="space-y-3">
         <div>
           <label htmlFor="habit-name" className="block text-xs font-medium text-tokyo-fg2 mb-1">
