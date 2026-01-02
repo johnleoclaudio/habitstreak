@@ -121,18 +121,6 @@ export const HabitGrid = ({ habitColor, selectedYear, isCompleted, onToggleCompl
               ))}
             </div>
           </div>
-
-          {/* Legend */}
-          <div className="flex items-center gap-4 text-xs text-tokyo-fg3 mt-2 border-t border-tokyo-bg3 pt-4">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-sm bg-tokyo-bg border border-tokyo-bg3"></div>
-              <span>Not completed</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-sm" style={{ backgroundColor: habitColor }}></div>
-              <span>Completed</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
