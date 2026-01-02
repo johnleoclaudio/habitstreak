@@ -51,47 +51,45 @@ export const App = () => {
               Track your daily habits and build lasting streaks
             </p>
           </div>
-          <DarkModeToggle />
-        </header>
-
-        {/* Global Year Selector */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-sm text-tokyo-fg3">Year:</span>
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
-              className="flex items-center gap-2 px-4 py-2 bg-tokyo-bg1 hover:bg-tokyo-bg2 border border-tokyo-bg3 rounded-md text-tokyo-fg transition-colors"
-            >
-              <span className="font-medium">{selectedYear}</span>
-              <ChevronDown className={`h-4 w-4 transition-transform ${isYearDropdownOpen ? 'rotate-180' : ''}`} />
-            </button>
-            
-            {isYearDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-10 min-w-full">
-                {availableYears.map((year) => (
-                  <button
-                    key={year}
-                    onClick={() => {
-                      setSelectedYear(year)
-                      setIsYearDropdownOpen(false)
-                    }}
-                    className={`
-                      w-full px-4 py-2 text-left hover:bg-tokyo-bg2 transition-colors
-                      ${year === selectedYear ? 'bg-tokyo-bg2 text-tokyo-blue' : 'text-tokyo-fg'}
-                      ${year === availableYears[0] ? 'rounded-t-md' : ''}
-                      ${year === availableYears[availableYears.length - 1] ? 'rounded-b-md' : ''}
-                    `}
-                  >
-                    {year}
-                    {year === currentYear && (
-                      <span className="ml-2 text-xs text-tokyo-fg3">(current)</span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
+          <div className="flex items-center gap-3">
+            {/* Year Selector */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
+                className="flex items-center gap-1 px-2 py-1 text-sm text-tokyo-fg3 hover:text-tokyo-fg transition-colors"
+              >
+                <span>{selectedYear}</span>
+                <ChevronDown className={`h-3 w-3 transition-transform ${isYearDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {isYearDropdownOpen && (
+                <div className="absolute top-full right-0 mt-1 bg-tokyo-bg1 border border-tokyo-bg3 rounded-md shadow-lg z-10 min-w-full">
+                  {availableYears.map((year) => (
+                    <button
+                      key={year}
+                      onClick={() => {
+                        setSelectedYear(year)
+                        setIsYearDropdownOpen(false)
+                      }}
+                      className={`
+                        w-full px-3 py-1 text-sm text-left hover:bg-tokyo-bg2 transition-colors
+                        ${year === selectedYear ? 'bg-tokyo-bg2 text-tokyo-blue' : 'text-tokyo-fg'}
+                        ${year === availableYears[0] ? 'rounded-t-md' : ''}
+                        ${year === availableYears[availableYears.length - 1] ? 'rounded-b-md' : ''}
+                      `}
+                    >
+                      {year}
+                      {year === currentYear && (
+                        <span className="ml-1 text-xs text-tokyo-fg4">(current)</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <DarkModeToggle />
           </div>
-        </div>
+        </header>
 
         <div className="space-y-4">
           <AddHabitForm onAddHabit={addHabit} />
