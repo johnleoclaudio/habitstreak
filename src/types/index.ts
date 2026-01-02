@@ -3,6 +3,7 @@ export interface Habit {
   name: string
   color: string
   createdAt: string
+  order: number
 }
 
 export interface HabitCompletion {

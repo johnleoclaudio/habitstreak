@@ -6,7 +6,15 @@ export const loadHabitData = (): HabitData => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
-      return JSON.parse(stored)
+      const data = JSON.parse(stored)
+      // Migrate old data without order field
+      if (data.habits) {
+        data.habits = data.habits.map((habit: any, index: number) => ({
+          ...habit,
+          order: habit.order !== undefined ? habit.order : index
+        }))
+      }
+      return data
     }
   } catch (error) {
     console.error('Failed to load habit data:', error)

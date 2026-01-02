@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react'
+import { Trash2, GripVertical } from 'lucide-react'
 import { Habit } from '../types'
 import { HabitGrid } from './HabitGrid'
 
@@ -9,9 +9,10 @@ interface HabitCardProps {
   onToggleCompletion: (toggleDate: Date) => void
   onRemoveHabit: () => void
   onYearChange?: (year: number) => void
+  dragHandleProps?: any
 }
 
-export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion, onRemoveHabit, onYearChange }: HabitCardProps) => {
+export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion, onRemoveHabit, onYearChange, dragHandleProps }: HabitCardProps) => {
   // Create a normalized today date (start of day)
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -63,6 +64,14 @@ export const HabitCard = ({ habit, selectedYear, isCompleted, onToggleCompletion
           >
             <Trash2 className="h-3 w-3" />
           </button>
+
+          <div
+            {...dragHandleProps}
+            className="p-1 text-tokyo-fg4 hover:text-tokyo-fg cursor-grab active:cursor-grabbing transition-colors"
+            aria-label="Drag to reorder habit"
+          >
+            <GripVertical className="h-4 w-4" />
+          </div>
         </div>
       </div>
 

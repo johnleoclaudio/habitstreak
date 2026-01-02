@@ -14,12 +14,25 @@ export const useHabits = () => {
       id: generateId(),
       name,
       color,
-      createdAt: formatDate(new Date())
+      createdAt: formatDate(new Date()),
+      order: data.habits.length
     }
     
     setData(prev => ({
       ...prev,
       habits: [...prev.habits, newHabit]
+    }))
+  }
+
+  const reorderHabits = (newOrder: Habit[]): void => {
+    const habitsWithUpdatedOrder = newOrder.map((habit, index) => ({
+      ...habit,
+      order: index
+    }))
+    
+    setData(prev => ({
+      ...prev,
+      habits: habitsWithUpdatedOrder
     }))
   }
 
@@ -63,11 +76,12 @@ export const useHabits = () => {
   }
 
   return {
-    habits: data.habits,
+    habits: data.habits.sort((a, b) => (a.order || 0) - (b.order || 0)),
     completions: data.completions,
     addHabit,
     removeHabit,
     toggleCompletion,
-    isCompleted
+    isCompleted,
+    reorderHabits
   }
 }
