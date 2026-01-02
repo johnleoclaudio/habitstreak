@@ -4,6 +4,8 @@ import { useHabits } from './hooks/useHabits'
 import { DarkModeToggle } from './components/DarkModeToggle'
 import { AddHabitForm } from './components/AddHabitForm'
 import { HabitCard } from './components/HabitCard'
+import { GoogleAnalytics } from './components/GoogleAnalytics'
+import { trackHabitEvent } from './utils/analytics'
 
 const DragDropComponents = lazy(() => 
   import('./components/DragDropComponents').then(module => ({
@@ -47,6 +49,7 @@ export const App = () => {
 
   return (
     <div className="min-h-screen bg-tokyo-bg transition-colors">
+      <GoogleAnalytics />
       <div className="max-w-5xl mx-auto px-4 py-6 pb-24 md:pb-6">
         <header className="mb-6">
           <div className="flex items-center justify-between">
@@ -80,6 +83,7 @@ export const App = () => {
                         onClick={() => {
                           setSelectedYear(year)
                           setIsYearDropdownOpen(false)
+                          trackHabitEvent.yearChanged(year)
                         }}
                         className={`
                           w-full px-3 py-1 text-sm text-left hover:bg-tokyo-bg2 transition-colors
@@ -167,6 +171,7 @@ export const App = () => {
                       onClick={() => {
                         setSelectedYear(year)
                         setIsYearDropdownOpen(false)
+                        trackHabitEvent.yearChanged(year)
                       }}
                       className={`
                         w-full px-3 py-2 text-sm text-left hover:bg-tokyo-bg2 transition-colors

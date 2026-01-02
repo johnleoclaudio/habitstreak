@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Habit, HabitCompletion, HabitData } from '../types'
 import { loadHabitData, saveHabitData, generateId, formatDate } from '../utils/storage'
+import { trackHabitEvent } from '../utils/analytics'
 
 export const useHabits = () => {
   const [data, setData] = useState<HabitData>(() => loadHabitData())
@@ -22,6 +23,9 @@ export const useHabits = () => {
       ...prev,
       habits: [...prev.habits, newHabit]
     }))
+    
+    // Track habit creation
+    trackHabitEvent.habitAdded(name)
   }
 
   const reorderHabits = (newOrder: Habit[]): void => {
@@ -37,10 +41,17 @@ export const useHabits = () => {
   }
 
   const removeHabit = (habitId: string): void => {
+    const habit = data.habits.find(h => h.id === habitId)
+    
     setData(prev => ({
       habits: prev.habits.filter(h => h.id !== habitId),
       completions: prev.completions.filter(c => c.habitId !== habitId)
     }))
+    
+    // Track habit deletion
+    if (habit) {
+      trackHabitEvent.habitDeleted(habit.name)
+    }
   }
 
   const toggleCompletion = (habitId: string, date: Date): void => {
@@ -48,6 +59,7 @@ export const useHabits = () => {
     const existingCompletion = data.completions.find(
       c => c.habitId === habitId && c.date === dateStr
     )
+    const habit = data.habits.find(h => h.id === habitId)
 
     if (existingCompletion) {
       setData(prev => ({
@@ -56,6 +68,11 @@ export const useHabits = () => {
           c => !(c.habitId === habitId && c.date === dateStr)
         )
       }))
+      
+      // Track habit uncompleted
+      if (habit) {
+        trackHabitEvent.habitUncompleted(habit.name)
+      }
     } else {
       const newCompletion: HabitCompletion = {
         habitId,
@@ -65,6 +82,11 @@ export const useHabits = () => {
         ...prev,
         completions: [...prev.completions, newCompletion]
       }))
+      
+      // Track habit completed
+      if (habit) {
+        trackHabitEvent.habitCompleted(habit.name)
+      }
     }
   }
 
